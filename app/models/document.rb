@@ -1,9 +1,9 @@
 class Document < ApplicationRecord
-  validate :name, presence: true
-  validate :path, presence: true
-  validate :size, presence: true
-  validate :extension, presence: true
-  validate :checksum, unique: true
+  validates :name, presence: true
+  validates :path, presence: true
+  validates :size, presence: true
+  validates :extension, presence: true
+  validates :checksum, uniqueness: true
 
   before_create :get_checksum
 
@@ -14,6 +14,7 @@ class Document < ApplicationRecord
   end
 
   def get_checksum
+
   end
 
   def get_file_name
