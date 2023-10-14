@@ -7,9 +7,12 @@ class Api::DocumentsController < ApplicationController
 
   # POST /api/documents
   def create
-    document = Document.new(document_params)
+    return if params[:file].nil?
 
-    return json: { info: "Document already exists" } if Document.checksum(document.get_checksum).exists?
+    permitted_params = document_params
+    document = Document.new(permitted_params[:file])
+
+    return render json: { info: 'Document already exists' } if Document.find_by(checksum: document.checksum)
 
     if document.save
       render json: document, status: :created
@@ -21,6 +24,6 @@ class Api::DocumentsController < ApplicationController
   private
 
   def document_params
-    params.require(:document).permit(:name, :path, :size, :extension, :checksum)
+    params.permit( :file)
   end
 end
