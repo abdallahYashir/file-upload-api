@@ -14,7 +14,7 @@ class Api::DocumentsController < ApplicationController
 
     return render json: { info: 'Document already exists' } if Document.find_by(checksum: document.checksum)
 
-    if document.save
+    if document.save!
       render json: document, status: :created
     else
       render json: document.errors, status: :unprocessable_entity

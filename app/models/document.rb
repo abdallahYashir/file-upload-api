@@ -1,5 +1,4 @@
 class Document < ApplicationRecord
-  attr_reader :name, :path, :size, :extension, :checksum
   validates :name, presence: true
   validates :path, presence: true
   validates :size, presence: true
@@ -12,11 +11,15 @@ class Document < ApplicationRecord
   def initialize(file)
     super()
 
-    @name = file.original_filename
-    @path = save_file!(file)
-    @size = File.size(@path)
-    @extension = File.extname(@path)
-    @checksum = get_checksum(@path)
+    self.name = file.original_filename
+    self.path = save_file!(file)
+    self.size = File.size(self.path)
+    self.extension = File.extname(self.path)
+    self.checksum = get_checksum(self.path)
+  end
+
+  def serializable_hash(options = nil)
+    super(options).except("path")
   end
 
   def save_file!(file)
