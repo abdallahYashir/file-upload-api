@@ -19,7 +19,7 @@ class Document < ApplicationRecord
   end
 
   def serializable_hash(options = nil)
-    super(options).except("path")
+    super(options).except("path").merge(size: (self.size / 1024.0 / 1024.0).round(3))
   end
 
   def save_file!(file)

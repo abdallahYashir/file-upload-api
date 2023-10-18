@@ -12,7 +12,7 @@ class Api::DocumentsController < ApplicationController
     permitted_params = document_params
     document = Document.new(permitted_params[:file])
 
-    return render json: { info: 'Document already exists', status: 409 } if Document.find_by(checksum: document.checksum)
+    return render json: { info: 'Document already exists', status: 409, name: document.name, checksum: document.checksum } if Document.find_by(checksum: document.checksum)
 
     if document.save!
       render json: document, status: :created
